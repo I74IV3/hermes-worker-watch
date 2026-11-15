@@ -1,6 +1,21 @@
-# Tooling for the plugin repository: the same lint contract the plugin is
-# developed under (E, W, F, I and C901 at complexity 10), and the pytest config
-# that makes the suite run from the repository root.
+# Tooling for the plugin repository: the plugin's runtime dependencies, the same
+# lint contract it is developed under (E, W, F, I and C901 at complexity 10), and
+# the pytest config that makes the suite run from the repository root.
+
+[project]
+name = "hermes-worker-watch"
+version = "1.0.0"
+description = "Worker Watch — a Hermes dashboard tab for watching kanban work"
+requires-python = ">=3.11"
+dependencies = ["fastapi", "pydantic"]
+
+[dependency-groups]
+dev = ["pytest>=8", "httpx"]
+
+# The plugin installs as a directory plugin (plugin.yaml + __init__.py); this
+# pyproject exists for the toolchain only, so there is nothing to build.
+[tool.uv]
+package = false
 
 [tool.ruff]
 line-length = 100
