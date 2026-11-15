@@ -1,0 +1,18 @@
+# Tooling for the plugin repository: the same lint contract the plugin is
+# developed under (E, W, F, I and C901 at complexity 10), and the pytest config
+# that makes the suite run from the repository root.
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "C901"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.pytest.ini_options]
+testpaths = ["plugin/worker-watch/tests"]
+pythonpath = ["plugin/worker-watch"]
+addopts = "-q --strict-markers"

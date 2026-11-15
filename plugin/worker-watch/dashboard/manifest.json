@@ -1,0 +1,13 @@
+{
+  "name": "worker-watch",
+  "label": "Worker Watch",
+  "description": "Running kanban cards across every board, each linked to the chat session working on it, plus the parked cards the dispatcher has stopped spawning (one-click Restart)",
+  "icon": "Activity",
+  "version": "1.0.0",
+  "tab": {
+    "path": "/worker-watch",
+    "position": "end"
+  },
+  "entry": "dist/index.js",
+  "api": "plugin_api.py"
+}

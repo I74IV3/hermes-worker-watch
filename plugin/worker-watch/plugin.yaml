@@ -1,0 +1,46 @@
+# Installer manifest for the Worker Watch plugin (the dashboard tab is described
+# by dashboard/manifest.json, which feeds the dashboard tab scanner only).
+# Registered surface at this commit: one FastAPI APIRouter under
+# /api/plugins/worker-watch/ with five GET routes and one POST, plus one
+# dashboard tab. No agent tools, no hooks, no middleware, no required
+# environment variables.
+name: worker-watch
+version: "1.0.0"
+# The lowest release this plugin runs on, proven by running its six routes on
+# that release (0.15.0 is the first whose dashboard plugin SDK exposes every
+# component the tab bundle uses — `Checkbox` landed in v2026.5.28 — and whose
+# `hermes kanban` CLI exists at all). Declared here as well as in the catalog
+# entry because an older loader enforces only this one.
+requires_hermes: ">=0.15.0"
+description: >-
+  Dashboard tab for watching kanban work: every running card on every board,
+  each linked to the chat session working on it; the parked cards the
+  dispatcher stopped spawning; this host's own root chats; a drawer with one
+  card in full; and a per-board relationship graph (experimental). Disclosure —
+  reads the board databases and the session state.db read-only, except the
+  Restart button, whose single POST asks Hermes' own `kanban retry` of the CLI
+  and re-reads the row (and which stays hidden on an install whose CLI has no
+  such verb); no network calls of its own, no telemetry. Dashboard tab only: no
+  agent tools, hooks or middleware.
+author: dan
+license: MIT
+tags: [dashboard, kanban, sessions, read-only]
+# The whole HTTP surface the dashboard mounts, so an install can be audited
+# without reading the bundle. tests/test_worker_watch_plugin.py derives this
+# list from the imported router and fails on any drift in either direction.
+dashboard:
+  manifest: dashboard/manifest.json
+  api: dashboard/plugin_api.py
+  routes:
+    - "GET /watch"
+    - "GET /graph"
+    - "GET /chats"
+    - "GET /card"
+    - "GET /stalled"
+    - "POST /restart"
+provides_tools: []
+provides_hooks: []
+# Empty on purpose: none of the gated capability ids (tools.override,
+# llm.*_override, gateway.platform_actions, …) has an enforcing surface on a
+# dashboard router, so declaring one would be a false claim.
+capabilities: []
